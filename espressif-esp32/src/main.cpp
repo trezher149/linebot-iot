@@ -7,30 +7,29 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
-
-// const char SSID[] = "AISFibre_B7_703_2.4G";
-// const char PASSWD[] = "TU@B7703";
-// const char SSID[] = "Denied + L + Ratio";
-// const char PASSWD[] = "itgs6981";
-const char SSID[] = "coffeeshop-2.4G";
-const char PASSWD[] = "airsiam29";
+//Wifi SSID and password
+const char SSID[] = "";
+const char PASSWD[] = "";
 
 Adafruit_BMP280 bmp280;
 Adafruit_HTS221 hts221;
 
 WiFiClient wifiClient;
 PubSubClient mqttClient;
+//Arduino Json
 DynamicJsonDocument devData(256);
 DynamicJsonDocument subData(256);
-// DynamicJsonDocument bmpData(256);
 
+//Defining MQTT broker server
 #define BROKER_SERVER "broker.hivemq.com"
 #define BROKER_PORT 1883
 #define SERVER_CONNECTION_TIMEOUT 5000
 
+//Create time and interval
 unsigned long pre = 0;
 unsigned long interval = 60000; //milisec
 
+//Function initialization
 void changeInterval(int hour, int min);
 void checkMqttConnection();
 void printValue(int *temp, int *humid, int* pressure);
@@ -53,6 +52,7 @@ void on_msg(char* topic, byte* payload, unsigned int length) {
 }
 
 void setup() {
+  //Setting up HTS221 sensor
   Serial.begin(9600);
   Wire.begin(41, 40, 100000);
 
@@ -61,20 +61,24 @@ void setup() {
   if (hts221.begin_I2C(0x5F)) {
     Serial.print(" Working\n");
   }
+  //If fail, loop forever
   else {
     Serial.println("\nError: HTS221 not found");
     while (true) {}
   }
-
+  
+  //Setting up BMP280 sensor
   Serial.print("Checking BMP280...");
   if (bmp280.begin(0x76)) {
     Serial.print(" Working\n");
   }
+  //If fail, loop forever
   else {
     Serial.println("\nError: BMP280 not found");
     while (true) {}
   }
 
+  //Connecting to wifi
   Serial.print("Connecting to ");
   Serial.print(SSID);
   WiFi.begin(SSID, PASSWD);
@@ -84,11 +88,12 @@ void setup() {
   }
   Serial.println("\nConnected!");
   
+  //Connecting to HiveMQ broker server
   mqttClient.setClient(wifiClient);
   mqttClient.setServer(BROKER_SERVER, BROKER_PORT);
   mqttClient.setCallback(on_msg);
   checkMqttConnection();
-  mqttClient.subscribe("cn466/studentnumber85/setting/device/1");
+  mqttClient.subscribe("cn/bigproj/setting/device/1");
 }
 
 void loop() {
@@ -98,17 +103,21 @@ void loop() {
     Serial.println("Reconnecting");
     checkMqttConnection();
     char buffer[256];
+    //Read value from sensors
     sensors_event_t humid, temp;
     hts221.getEvent(&humid, &temp);
     int t = (int) (temp.temperature * 100);
     int h = humid.relative_humidity;
     int p = (int) bmp280.readPressure();
+    //Assign value to JSON key
     devData["temp"] = t;
     devData["humid"] = h;
     devData["pressure"] = p;
 
+    //serialize devData from JSON to string
     size_t n = serializeJson(devData, buffer);
-    if (mqttClient.publish("cn466/bigproj/device/1", buffer, false)) {
+    //publish data
+    if (mqttClient.publish("cn/bigproj/device/1", buffer, false)) {
       Serial.println("Data is sent with following data:");
       printValue(&t, &h, &p);
       Serial.print("Buffer string \"");
@@ -121,43 +130,8 @@ void loop() {
     else {
       Serial.print("Data send failed!\n");
     }
-    
-  // n = serializeJson(bmpData, buffer);
-  // mqttClient.publish("cn466/studentnumber85/bmp280", buffer, n);
   }
   mqttClient.loop();
-  // char buffer[256];
-  // sensors_event_t humid, temp;
-  // hts221.getEvent(&humid, &temp);
-  // float t = temp.temperature;
-  // int h = humid.relative_humidity;
-  // float p = bmp280.readPressure();
-
-  // Serial.print("Temperature: ");
-  // Serial.print(t);
-  // Serial.println(" C");
-  // Serial.print("Humidity: ");
-  // Serial.print(h);
-  // Serial.println(" %");
-  // Serial.print("Pressure: ");
-  // Serial.print(p);
-  // Serial.println(" Pa");
-  // devData["temp"] = t;
-  // devData["humid"] = h;
-  // devData["pressure"] = p;
-
-  // size_t n = serializeJson(devData, buffer);
-  // Serial.println(buffer);
-  // if (mqttClient.publish("cn466/studentnumber85/device/1", buffer, false)) {
-  //   Serial.print("Data is sent!\n");
-  // }
-  // else {
-  //   Serial.print("Data send failed!\n");
-  // }
-  // // n = serializeJson(bmpData, buffer);
-  // // mqttClient.publish("cn466/studentnumber85/bmp280", buffer, n);
-  // mqttClient.loop();
-  // delay(60000);
 }
 
 void changeInterval(int hour, int min){
@@ -169,6 +143,7 @@ void checkMqttConnection() {
   while (!mqttClient.connect("someone")) {
     if (curr - pre >= SERVER_CONNECTION_TIMEOUT) {
       Serial.println("Connection timeout!");
+      //If fail, loop forever
       while (true){}
     }
   }
