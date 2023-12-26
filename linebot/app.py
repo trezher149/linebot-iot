@@ -34,20 +34,20 @@ import json
 load_dotenv()
 
 app = FastAPI()
-ngrok.set_auth_token(os.environ["NGROK_TOKEN"])
+ngrok.set_auth_token(os.environ.get("NGROK_TOKEN"))
 public_url = ngrok.connect(os.environ["WEBHOOK_PORT"]).public_url
 print(public_url)
 
 configuration = Configuration(
-    access_token=os.environ["LINE_ACCESS_TOKEN"],
+    access_token=os.environ.get("LINE_ACCESS_TOKEN"),
 )
 async_api_client = AsyncApiClient(configuration)
 line_bot_api = AsyncMessagingApi(async_api_client)
-parser = WebhookParser(os.environ["LINE_CHANNEL_SECRET"])
+parser = WebhookParser(os.environ.get("LINE_CHANNEL_SECRET"))
 handler = WebhookHandler('NGROK_TOKEN')
 
-usrname = os.environ["MONGO_INITDB_ROOT_USERNAME"]
-passwd = os.environ["MONGO_INITDB_ROOT_PASSWORD"]
+usrname = os.environ.get("MONGO_INITDB_ROOT_USERNAME")
+passwd = os.environ.get("MONGO_INITDB_ROOT_PASSWORD")
 mongo_client = MongoClient(f"mongodb://{usrname}:{passwd}@linebot-iot-mongodb-1:27017/")
 db = mongo_client.test_database
 collection = db.test_collection

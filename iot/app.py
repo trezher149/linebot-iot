@@ -16,13 +16,13 @@ mqtt_config.host = "broker.hivemq.com"
 mqtt = FastMQTT(config=mqtt_config)
 mqtt.init_app(app)
 
-usrname = os.environ["MONGO_INITDB_ROOT_USERNAME"]
-passwd = os.environ["MONGO_INITDB_ROOT_PASSWORD"]
+usrname = os.environ.get("MONGO_INITDB_ROOT_USERNAME")
+passwd = os.environ.get("MONGO_INITDB_ROOT_PASSWORD")
 mongo_client = MongoClient(f"mongodb://{usrname}:{passwd}@linebot-iot-mongodb-1:27017/")
 
 @mqtt.on_connect()
 def connect(client, flags, rc, properties):
-    mqtt.client.subscribe("Ssenser/T/A") #subscribing mqtt topic
+    mqtt.client.subscribe("cn/bigproj/device/1") #subscribing mqtt topic
     print("Connected: ", client, flags, rc, properties)
 
 @mqtt.on_message()
