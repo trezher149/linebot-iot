@@ -1,0 +1,6 @@
+fastapi
+line-bot-sdk
+pyngrok
+uvicorn
+python-dotenv
+pymongo
