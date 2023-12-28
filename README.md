@@ -6,7 +6,15 @@ This is an IOT development project with LINE Bot and LINE LIFF.
 ---
 ### สมาชิก (Member)
 1. ปุญญ์ฐิสา แตงมั่ง (Punthisa Taengmang) 6110613236
+   - LINE Bot
+   - Test cases
 2. มุนินทร์ วุฒิพงษ์วรกิจ (Munin Wutthipongworakit) 6310682601
-3. รัญชนา ศุภเสวต (Runchana Supasavate) 6310682650
-4. ณัฐนนท์ บุญเขตต์ (Nattanol Boonyakhet) 6310682726
-5. ธัญญวัฒน์ ธนัครสมบัติ (Thunyavat Thanakornsombat) 6310682825
+3. - LINE LIFF
+   - Frontend
+4. รัญชนา ศุภเสวต (Runchana Supasavate) 6310682650
+   - LINE Bot 
+5. ณัฐนนท์ บุญเขตต์ (Nattanol Boonyakhet) 6310682726
+   - Backend (API)
+   - Backend (MQTT)
+6. ธัญญวัฒน์ ธนัครสมบัติ (Thunyavat Thanakornsombat) 6310682825
+   - Espressif ESP32

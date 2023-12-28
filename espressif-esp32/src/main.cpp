@@ -106,6 +106,8 @@ void loop() {
     //Read value from sensors
     sensors_event_t humid, temp;
     hts221.getEvent(&humid, &temp);
+    // temperature * 100 and convert to int to reduce size
+    // Always convert it back by temperature_value / 100
     int t = (int) (temp.temperature * 100);
     int h = humid.relative_humidity;
     int p = (int) bmp280.readPressure();
