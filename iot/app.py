@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 from fastapi_mqtt import FastMQTT, MQTTConfig
 from pymongo import MongoClient
 import pymongo
@@ -19,6 +20,9 @@ mqtt.init_app(app)
 usrname = os.environ.get("MONGO_INITDB_ROOT_USERNAME")
 passwd = os.environ.get("MONGO_INITDB_ROOT_PASSWORD")
 mongo_client = MongoClient(f"mongodb://{usrname}:{passwd}@linebot-iot-mongodb-1:27017/")
+
+class Device_id_Search(BaseModel):
+    device_id: str
 
 @mqtt.on_connect()
 def connect(client, flags, rc, properties):
@@ -42,3 +46,13 @@ async def func():
     #post = collection.find_one(sort= [( '_id', pymongo.DESCENDING)])
     #post.pop("_id")
     return "OK"
+
+
+# Below this line is apis for LINE Bot to use
+# ======================================================================
+@app.post("/api/linebot/environment_data")
+async def line_environment_data(device_id: Device_id_Search):
+    db = mongo_client.test_database
+    collection = db.test_collection
+    data = collection.find_one({'device_id': device_id.device_id}
+        ,sort=[('temperature', pymongo.DESCENDING)])
