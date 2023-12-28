@@ -34,7 +34,7 @@ async def message(client, topic, payload, qos, properties):
     print("Received message: ",topic, payload.decode())
     collection = environmen_database.env_device_data
     data = json.loads(payload.decode())
-    post = { "device_id": topic[4],"timestamp": datetime.now(), "humidity": data["humid"], "temperature": data["temp"], "pressure": data["pressure"]}
+    post = { "device_id": topic.splite("/")[4],"timestamp": datetime.now(), "humidity": data["humid"], "temperature": data["temp"], "pressure": data["pressure"]}
     collection.insert_one(post)
     return 0
 
