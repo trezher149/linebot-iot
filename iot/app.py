@@ -34,7 +34,7 @@ async def message(client, topic, payload, qos, properties):
     print("Received message: ",topic, payload.decode())
     collection = environmen_database.env_device_data
     data = json.loads(payload.decode())
-    post = { "device_id": topic.splite("/")[4],"timestamp": datetime.now(), "humidity": data["humid"], "temperature": data["temp"], "pressure": data["pressure"]}
+    post = { "device_id": topic.splite("/")[3],"timestamp": datetime.now(), "humidity": data["humid"], "temperature": data["temp"], "pressure": data["pressure"]}
     collection.insert_one(post)
     return 0
 
@@ -53,5 +53,7 @@ async def func():
 async def line_environment_data(device_id: Device_id_Search):
     db = environmen_database.test_database
     collection = db.env_device_data
-    data = collection.find_one({'device_id': device_id.device_id}
-        ,sort=[('temperature', pymongo.DESCENDING)])
+    data: dict = collection.find_one({'device_id': device_id.device_id}
+        ,sort=[('temperature', pymongo.DESCENDING)]).__dict__
+    data.pop('_id')
+    return data
