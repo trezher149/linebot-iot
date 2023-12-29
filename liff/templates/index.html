@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CN466 LIFF demo</title>
-    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
+    <title>CN466 LIFF</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script> -->
 </head>
 <body>
-    <h1>Status</h1>
-    <p id="status">Waiting for LIFF</p>
+    <h1>Report Environment</h1>
+    <!-- <p id="status">Waiting for LIFF</p>
     <script>
         liff.init({
             liffId: '', // Use own liffId
@@ -18,10 +20,31 @@
         }).catch((err) => {
             document.getElementById('status').textContent = 'Something went wrong';
         });
-    </script>
+    </script> -->
+
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
 
     <script>
-        
+        const config = {
+      type: 'line',
+      data: data, 
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Chart.js Line Chart'
+          }
+        }
+      },
+    };
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, config);
     </script>
 </body>
 </html>
