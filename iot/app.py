@@ -32,9 +32,10 @@ def connect(client, flags, rc, properties):
 @mqtt.on_message()
 async def message(client, topic, payload, qos, properties):
     print("Received message: ",topic, payload.decode())
-    collection = environmen_database.env_device_data
+    db = environmen_database.test_database
+    collection = db.env_device_data
     data = json.loads(payload.decode())
-    post = { "device_id": topic.splite("/")[-1],"timestamp": datetime.now(), "humidity": data["humid"], "temperature": data["temp"], "pressure": data["pressure"]}
+    post = { "device_id": topic.split("/")[-1],"timestamp": datetime.now(), "humidity": data["humid"], "temperature": data["temp"], "pressure": data["pressure"]}
     collection.insert_one(post)
     return 0
 
@@ -42,10 +43,9 @@ async def message(client, topic, payload, qos, properties):
 async def func():
     db = environmen_database.test_database
     collection = db.env_device_data
-    #post = collection.find_one(sort= [( '_id', pymongo.DESCENDING)])
-    #post.pop("_id")
-    return "OK"
-
+    post = collection.find_one(sort= [( '_id', pymongo.DESCENDING)])
+    post.pop("_id")
+    return post
 
 # Below this line is apis for LINE Bot to use
 # ======================================================================
@@ -57,3 +57,14 @@ async def line_environment_data(device_id: Device_id_Search):
         ,sort=[('temperature', pymongo.DESCENDING)]).__dict__
     data.pop('_id')
     return data
+
+@app.get("/api/front/environ_data")
+async def front_environ_data():
+    db = environmen_database.test_database
+    collection = db.env_device_data
+    cursor = collection.find(sort= [( '_id', pymongo.DESCENDING)], limit=15)
+    result_list = []
+    for document in cursor:
+        document["_id"] = str(document["_id"])
+        result_list.append(document)
+    return result_list
