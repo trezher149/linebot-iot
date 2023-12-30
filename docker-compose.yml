@@ -11,9 +11,6 @@ services:
       - LINE_ACCESS_TOKEN=qNziII5hVLmHW6yMlVyYj/QKxdWx7bjtrGxeBT4hwNVx40WUyYRgTz4nxVj6X0i+MYBOqDvhQYsBiC8zUWvNOmuRUPO1r04SdPYelZtioylC1kgZMFmOgXvLx68bW9LcuOSvrFYcZkPyf+/T/lTn/gdB04t89/1O/w1cDnyilFU=
       - LINE_ADMIN_ID=U6bfb9784dfa177ab5452161212deabcf
       - NGROK_TOKEN=2XR5dbPWJUnf0JWJa8CGILJ2HtC_76y5kVbQNpJiaqoHyznP2
-      - MONGO_HOST=linebot-iot-mongodb-1:27017/
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=1234
     env_file: .env
     depends_on:
       - "iot"
@@ -30,7 +27,8 @@ services:
       - "6000:6000"
     env_file: .env
     depends_on:
-      - "mongodb"      
+      - "mongodb"
+        
   mongodb:
     container_name: "mongodb"
     image: mongo
