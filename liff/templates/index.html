@@ -1,50 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CN466 LIFF</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script> -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
 </head>
 <body>
-    <h1>Report Environment</h1>
-    <!-- <p id="status">Waiting for LIFF</p>
-    <script>
-        liff.init({
-            liffId: '', // Use own liffId
-            withLoginOnExternalBrowser: true, // Enable automatic login process
-        }).then(() => {
-            document.getElementById('status').textContent = 'LIFF is ready';
-            // start to use LIFF's api
-        }).catch((err) => {
-            document.getElementById('status').textContent = 'Something went wrong';
-        });
-    </script> -->
-
-    <div>
-        <canvas id="myChart"></canvas>
-    </div>
-
-    <script>
-        const config = {
-      type: 'line',
-      data: data, 
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: 'Chart.js Line Chart'
-          }
-        }
-      },
+  <h1>Report Environment</h1>
+  <div>
+    <canvas id="myChart"></canvas>
+  </div>
+  
+  <script>
+    const config = {
+    type: 'line',
+    data: data,
     };
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const myChart = new Chart(ctx, config);
-    </script>
+
+    const labels = Array.from({ length: 15 }, (_, index) => index + 1);
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Temperature',
+          data: [65, 59, 80, 81, 56, 55, 40], //example data
+          fill: false,
+          borderColor: 'rgb(0, 128, 255)',
+          tension: 0.1
+        },{
+          label: 'Humidity',
+          data: [65, 59, 80, 83, 56, 55, 40], //example data
+          fill: false,
+          borderColor: 'rgb(255, 1, 127)',
+          tension: 0.1
+        },{
+          label: 'Pressure',
+          data: [65, 59, 80, 83, 56, 55, 40], //example data
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1
+        }]
+    };
+  </script>
+
+  {% if data %}
+
+  <ul>
+    <li><strong>Timestamp:</strong> {{ data["timestamp"] }}</li>
+    <li><strong>Temperature HTS:</strong> {{ data["temperature hts"] }} °C</li>
+    <li><strong>Humidity HTS:</strong> {{ data["humidity hts"] }} %</li>
+    <li><strong>Temperature BMP:</strong> {{ data["temperature bmp"] }} °C</li>
+    <li><strong>Pressure BMP:</strong> {{ data["pressure bmp"] }} hPa</li>
+  </ul>
+  {% else %}
+  <p>ไม่พบข้อมูล IoT</p>
+  {% endif %}
 </body>
 </html>
