@@ -2,23 +2,15 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
-from dotenv import load_dotenv
-import asyncio
-import os
 from pymongo import MongoClient
-import pymongo
-import json
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-usrname = os.environ.get("MONGO_INITDB_ROOT_USERNAME")
-passwd = os.environ.get("MONGO_INITDB_ROOT_PASSWORD")
-mongo_client = MongoClient(f"mongodb://{usrname}:{passwd}@linebot-iot-mongodb-1:27017/")
-db = mongo_client.test_database
-collection = db.test_collection
+client = MongoClient("mongodb://mongodb:27017/")
+db = client["database_name"] # edit database name
+collection = db["collection_name"] # edit collection name
 
 @app.get("/test")
 async def test_endpoint():
@@ -26,5 +18,6 @@ async def test_endpoint():
 
 @app.get("/", response_class=HTMLResponse)
 async def liff_html(request: Request):
-    data = await collection.find_one({"your_query_criteria": "your_value"})
-    return templates.TemplateResponse("index.html", context={"request": request, "data": data})
+    latest_entries = collection.find().sort("_id", -1).limit(15)
+    data_to_render = [{"field1": entry["field1"], "field2": entry["field2"]} for entry in latest_entries]
+    return templates.TemplateResponse("index.html", context={"request": request, "data": data_to_render})
