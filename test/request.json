@@ -1,0 +1,13 @@
+{
+    "to": "***",
+    "messages":[
+        {
+            "type":"text",
+            "text":"test by Postman"
+        },
+        {
+            "type":"text",
+            "text":"replay message"
+        }
+    ]
+}
