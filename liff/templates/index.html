@@ -2,15 +2,16 @@
 {% block content %}
 <h1>Report Environment</h1>
 <div>
-    <canvas id="myChart"></canvas>
+  <canvas id="myChart"></canvas>
 </div>
+  {% raw %}
   <script>
     const labels1 = Array.from({ length: 15 }, (_, index) => index + 1);
     const data1 = {
-      labels: labels,
+      labels: labels1,
       datasets: [{
           label: 'Humidity',
-          data: [65, 59, 80, 81, 56, 55, 40], //example data
+          data: {% raw %}[{% for value in data["humidity"] %}{{ value }},{% endfor %}]{% endraw %},
           fill: false,
           borderColor: 'rgb(0, 128, 255)',
           tension: 0.1
@@ -22,14 +23,14 @@
     data: data1,
     };
   </script>
-
+  
   <script>
     const labels2 = Array.from({ length: 15 }, (_, index) => index + 1);
     const data2 = {
-      labels: labels,
+      labels: labels2,
       datasets: [{
           label: 'Temperature',
-          data: [65, 59, 80, 83, 56, 55, 40], //example data
+          data: {% raw %}[{% for value in data["temperature"] %}{{ value }},{% endfor %}]{% endraw %},
           fill: false,
           borderColor: 'rgb(255, 1, 127)',
           tension: 0.1
@@ -45,10 +46,10 @@
   <script>
     const labels3 = Array.from({ length: 15 }, (_, index) => index + 1);
     const data3 = {
-      labels: labels,
+      labels: labels3,
       datasets: [{
           label: 'Pressure',
-          data: [65, 59, 80, 83, 56, 55, 40], //example data
+          data: {% raw %}[{% for value in data["pressure"] %}{{ value }},{% endfor %}]{% endraw %},
           fill: false,
           borderColor: 'rgb(75, 192, 192)',
           tension: 0.1
