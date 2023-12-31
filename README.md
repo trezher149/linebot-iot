@@ -1,7 +1,11 @@
-# linebot-iot
+# Linebot-IOT
 โครงงานนี้ คือโครงพัฒนาระบบ IOT ด้วย LINE Bot และ LINE LIFF ซึ่งช่วยให้ผู้ใช้งานสามารถติดตามสภาพแวดล้อมที่วัดได้จากอุปกรณ์ IOT ของตัวเองได้อย่างง่ายดายและชัดเจนผ่านเว็บไซต์ที่ใช้งานด้วย LINE LIFF และผ่าน LINE Bot
 
 This is an IOT development project with LINE Bot and LINE LIFF.
+
+## Linebot EnviroNotify
+Bot Basic ID: @005wkjpj
+<img src="markdown-imgs\qr-code-line-bot.png" alt="Image" width="150" height="150">
 
 ---
 ### สมาชิก (Member)
