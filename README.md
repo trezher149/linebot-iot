@@ -69,4 +69,4 @@ Bot Basic ID: @005wkjpj
    - Espressif ESP32
    - Fullstack
 
-โครงงานนี้เป็นส่วนหนึ่งของวิชา CN466 Internet of Things อินเตอร์เน็ตของสรรพสิ่ง
+โครงงานนี้เป็นส่วนหนึ่งของวิชา CN466 Internet of Things อินเตอร์เน็ตของสรรพสิ่ง มหาวิทยาลัยธรรมศาสตร์
