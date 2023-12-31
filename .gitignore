@@ -3,3 +3,4 @@
 .venv
 **/.venv
 ./liff/node_modules/**
+./liff/static/style.css
