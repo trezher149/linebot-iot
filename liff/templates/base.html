@@ -7,22 +7,38 @@
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
     <link rel="stylesheet" href="../static/style.css">
 </head>
-<body>
-    <nav id="navbar">
-        <h1>EnviroNotify LIFF</h1>
-        <button id="btn">
-            <p id="status">Waiting for LIFF</p>
-        </button>
+<body class="bg-sky-100">
+    <nav class="bg-sky-400 px-8 py-4 flex justify-between text-white drop-shadow-lg">
+        <h1 class="order-first text-4xl font-bold my-auto">EnviroNotify LIFF</h1>
+        <div id="container" class="text-lg flex justify-between">
+            <button id="btn" class="transition ease-in-out delay-150 bg-green-600 p-4
+            font-bold my-auto hover:bg-green-800 order-last">Waiting for LIFF</button>
+        </div>
     </nav>
     <script>
+        const container = document.getElementById("container")
+        const btn = document.getElementById("btn")
         liff.init({
             liffId: '2002540804-7koJoM5b', // Use own liffId
-            withLoginOnExternalBrowser: true, // Enable automatic login process
+            withLoginOnExternalBrowser: false, // Enable automatic login process
         }).then(() => {
-            document.getElementById('status').textContent = 'LIFF is ready';
+            if (!liff.isLoggedIn() && !liff.isInClient()){
+                btn.setAttribute("onclick", "liff.login()")
+                btn.textContent = 'Login LINE';
+            }
+            else {
+                const idToken = liff.getDecodedIDToken()
+                const usrname = document.createTextNode("สวัสดีคุณ " + idToken["name"])
+                const usrnameContainer = document.createElement("p")
+                usrnameContainer.appendChild(usrname)
+                container.insertBefore(usrnameContainer, btn)
+                usrnameContainer.classList.add("my-auto")
+                btn.setAttribute("onclick", "liff.logout(); location.reload()")
+                btn.textContent = 'Logout';
+            }
             // start to use LIFF's api
         }).catch((err) => {
-            document.getElementById('status').textContent = 'Something went wrong';
+            btn.textContent = 'Err: Something went wrong';
         });
     </script>
     {% block content %}

@@ -1,75 +1,158 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Report Environment</h1>
-<div>
-    <canvas id="myChart"></canvas>
+<h1 id="title" class="ml-12 text-2xl font-bold my-8">Report Environment</h1>
+{% if data %}
+
+<div id="charts">
+<h2 class="ml-16 text-lg font-bold">อุณหภูมิ</h2>
+<div class="mx-24 mb-12">
+  <canvas id="tempChart" class="max-h-96 min-h-48"></canvas>
 </div>
+
+<h2 class="ml-16 text-lg font-bold">ความชื้น</h2>
+<div class="mx-24 mb-12">
+  <canvas id="humidChart" class="max-h-96 min-h-48"></canvas>
+</div>
+
+<h2 class="ml-16 text-lg font-bold">ความดันอากาศ</h2>
+<div class="max-h-96 mx-24 mb-12">
+  <canvas id="pressureChart" class="max-h-96 min-h-48"></canvas>
+</div>
+</div>
+
+  <!-- this is a script for chartjs -->
   <script>
-    const labels1 = Array.from({ length: 15 }, (_, index) => index + 1);
-    const data1 = {
+    const tempChart = document.getElementById('tempChart')
+    const humidChart = document.getElementById('humidChart')
+    const pressureChart = document.getElementById('pressureChart')
+    const environData = {{ data|safe }}
+    console.log (environData)
+    const labels = environData.map((x) => x["timestamp"])
+    const tempData = environData.map((x) => x["temperature"])
+    const humidData = environData.map((x) => x["humidity"])
+    const pressureData = environData.map((x) => x["pressure"])
+    const tmpData = {
       labels: labels,
-      datasets: [{
-          label: 'Humidity',
-          data: [65, 59, 80, 81, 56, 55, 40], //example data
-          fill: false,
-          borderColor: 'rgb(0, 128, 255)',
-          tension: 0.1
-        }]
-    };
-
-    const config1 = {
-    type: 'line',
-    data: data1,
-    };
+      datasets: [
+        {
+          label: 'อุณหภูมิ (องศาเซลเซียส)',
+          data: tempData, //example data
+          fill: true,
+          backgroundColor: 'rgba(30, 221, 74, 0.4)',
+          borderColor: 'rgba(1, 211, 26, 1)',
+          borderWidth: 2,
+          borderRadius: 4
+        }
+        ]
+    }
+    const humData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'ความชื้น (เปอร์เซ็นต์)',
+          data: humidData, //example data
+          fill: true,
+          backgroundColor: 'rgba(36, 159, 215, 0.4)',
+          borderColor: 'rgba(0, 139, 239, 1)',
+          borderWidth: 2,
+          borderRadius: 4
+        }
+        ]
+    }
+    const prssData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'ความดัน (ปาสคาล)',
+          data: pressureData, //example data
+          fill: true,
+          backgroundColor: 'rgba(115, 115, 115, 0.4)',
+          borderColor: 'rgba(115, 115, 115, 1)',
+          borderWidth: 2,
+          borderRadius: 4
+        }
+        ]
+    }
+    new Chart(tempChart, {
+      type: 'bar',
+      data: tmpData,
+      options: {
+        scales: {
+          y: {
+            min: 20,
+            max: 50
+            },
+          xAxes: [ { gridLines: { display: false } } ]
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+          }
+        }
+      }
+    )
+    new Chart(humidChart, {
+      type: 'bar',
+      data: humData,
+      options: {
+        scales: {
+          y: {
+            min: 30,
+            max: 100
+            },
+          xAxes: [ { gridLines: { display: false } } ]
+          },
+          plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+          }
+        }
+      }
+    )
+    new Chart(pressureChart, {
+      type: 'bar',
+      data: prssData,
+      options: {
+        scales: {
+          y: {
+            min: 50000
+            },
+          xAxes: [ { gridLines: { display: false } } ]
+          },
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+          }
+      }
+      }
+    )
   </script>
-
+  <!-- this is a script for line liff -->
   <script>
-    const labels2 = Array.from({ length: 15 }, (_, index) => index + 1);
-    const data2 = {
-      labels: labels,
-      datasets: [{
-          label: 'Temperature',
-          data: [65, 59, 80, 83, 56, 55, 40], //example data
-          fill: false,
-          borderColor: 'rgb(255, 1, 127)',
-          tension: 0.1
-        }]
-    };
-
-    const config2 = {
-    type: 'line',
-    data: data2,
-    };
+    if (!liff.isLoggedIn() && !liff.isInClient()) {
+      const title = document.getElementById("title")
+      const charts = document.getElementById("charts")
+      charts?.remove()
+      title.textContent = "โปรด login เข้าบัญชี LINE ของคุณ"
+    }
   </script>
+{% else %}
+  <h1>ไม่พบข้อมูล</h1>
+{% endif %}
 
-  <script>
-    const labels3 = Array.from({ length: 15 }, (_, index) => index + 1);
-    const data3 = {
-      labels: labels,
-      datasets: [{
-          label: 'Pressure',
-          data: [65, 59, 80, 83, 56, 55, 40], //example data
-          fill: false,
-          borderColor: 'rgb(75, 192, 192)',
-          tension: 0.1
-        }]
-    };
-
-    const config3 = {
-    type: 'line',
-    data: data3,
-    };
-  </script>
-
-  {% if data %}
-
-  <ul>
-    <li><strong>Timestamp:</strong> {{ data["timestamp"] }}</li>
-    <li><strong>Humidity:</strong> {{ data["humidity"] }} %</li>
-    <li><strong>Temperature:</strong> {{ data["temperature"] }} °C</li>
-    <li><strong>Pressure:</strong> {{ data["pressure"] }} hPa</li>
-  </ul>
-  {% else %}
-  <p>ไม่พบข้อมูล</p>
-  {% endif %}
 {% endblock content %}
