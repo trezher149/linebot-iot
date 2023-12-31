@@ -2,15 +2,16 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from pymongo import MongoClient
+import requests
+#from pymongo import MongoClient
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-client = MongoClient("mongodb://mongodb:27017/")
-db = client["test_database"] #database name
-collection = db["env_device_data"] #collection name
+#client = MongoClient("mongodb://mongodb:27017/")
+#db = client["test_database"] #database name
+#collection = db["env_device_data"] #collection name
 
 @app.get("/test")
 async def test_endpoint():
@@ -18,6 +19,6 @@ async def test_endpoint():
 
 @app.get("/", response_class=HTMLResponse)
 async def liff_html(request: Request):
-    latest_entries = collection.find().sort("_id", -1).limit(15)
-    data_to_render = [{"field1": entry["field1"], "field2": entry["field2"], "field3": entry["field3"]} for entry in latest_entries]
-    return templates.TemplateResponse("index.html", context={"request": request, "data": data_to_render})
+    data = requests.post("http://iot:8000/api/front/environ_data", json={"device_id": "c466"})
+    print(data.json())
+    return templates.TemplateResponse("index.html", context={"request": request, "data": data})
