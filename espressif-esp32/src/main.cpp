@@ -93,7 +93,7 @@ void setup() {
   mqttClient.setServer(BROKER_SERVER, BROKER_PORT);
   mqttClient.setCallback(on_msg);
   checkMqttConnection();
-  mqttClient.subscribe("cn/bigproj/setting/device/1");
+  mqttClient.subscribe("cn/bigproj/setting/device/c466");
 }
 
 void loop() {
@@ -119,7 +119,7 @@ void loop() {
     //serialize devData from JSON to string
     size_t n = serializeJson(devData, buffer);
     //publish data
-    if (mqttClient.publish("cn/bigproj/device/1", buffer, false)) {
+    if (mqttClient.publish("cn/bigproj/device/c466", buffer, false)) {
       Serial.println("Data is sent with following data:");
       printValue(&t, &h, &p);
       Serial.print("Buffer string \"");
