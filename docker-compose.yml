@@ -22,8 +22,8 @@ services:
     depends_on:
       - "mongodb"      
     volumes:
-      - liff/templates:/usr/src/app/templates
-      - liff/static:/usr/src/app/static
+      - ./liff/templates:/usr/src/app/templates
+      - ./liff/static:/usr/src/app/static
   mongodb:
     container_name: "mongodb"
     image: mongo
