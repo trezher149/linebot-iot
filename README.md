@@ -5,7 +5,6 @@ This is an IOT development project with LINE Bot and LINE LIFF.
 
 ## How to use
 1. สร้าง .env โดยมีตัวแปรดังนี้
-
    MONGO_INITDB_ROOT_USERNAME=
    MONGO_INITDB_ROOT_PASSWORD=
    MONGO_HOST=mongodb:27017/
@@ -13,7 +12,6 @@ This is an IOT development project with LINE Bot and LINE LIFF.
    LINE_ACCESS_TOKEN=
    LINE_ADMIN_ID=
    NGROK_TOKEN= //optional
-
 2. ใช้ LINE Official Account ของตัวเอง ให้ใช้ webhook จาก forward port ของ VScode
 3. ต้องมี LINE Login channel เป็นของตัวเอง และใช้ webhook เหมือนข้อ 2 ที่ใข้ port เลข 6000
 4. รัน demo โดยใช้คำสั่งดังนี้
