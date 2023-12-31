@@ -22,6 +22,9 @@
     type: 'line',
     data: data1,
     };
+
+    var ctx1 = document.getElementById('myChart1').getContext('2d');
+    var myChart1 = new Chart(ctx1, config1);
   </script>
   
   <script>
@@ -41,6 +44,9 @@
     type: 'line',
     data: data2,
     };
+
+    var ctx2 = document.getElementById('myChart2').getContext('2d');
+    var myChart2 = new Chart(ctx2, config2);
   </script>
 
   <script>
@@ -60,6 +66,9 @@
     type: 'line',
     data: data3,
     };
+
+    var ctx3 = document.getElementById('myChart3').getContext('2d');
+    var myChart3 = new Chart(ctx3, config3);
   </script>
 
   {% if data %}
