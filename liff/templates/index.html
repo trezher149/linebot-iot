@@ -144,12 +144,36 @@
   </script>
   <!-- this is a script for line liff -->
   <script>
-    if (!liff.isLoggedIn() && !liff.isInClient()) {
-      const title = document.getElementById("title")
-      const charts = document.getElementById("charts")
-      charts?.remove()
-      title.textContent = "โปรด login เข้าบัญชี LINE ของคุณ"
-    }
+        const container = document.getElementById("container")
+        const btn = document.getElementById("btn")
+        const title = document.getElementById("title")
+        const charts = document.getElementById("charts")
+        charts.style.display = 'none'
+        title.textContent = "โปรด login เข้าบัญชี LINE ของคุณ"
+        liff.init({
+            liffId: '2002540804-7koJoM5b', // Use own liffId
+            withLoginOnExternalBrowser: false, // Enable automatic login process
+        }).then(() => {
+            if (!liff.isLoggedIn() && !liff.isInClient()){
+                btn.setAttribute("onclick", "liff.login()")
+                btn.textContent = 'Login LINE';
+            }
+            else {
+                const idToken = liff.getDecodedIDToken()
+                const usrname = document.createTextNode("สวัสดีคุณ " + idToken["name"])
+                const usrnameContainer = document.createElement("p")
+                usrnameContainer.appendChild(usrname)
+                container.insertBefore(usrnameContainer, btn)
+                usrnameContainer.classList.add("my-auto")
+                btn.setAttribute("onclick", "liff.logout(); location.reload()")
+                btn.textContent = 'Logout';
+                charts.style.display = 'inline'
+                title.textContent = "Report Environment"
+            }
+            // start to use LIFF's api
+        }).catch((err) => {
+            btn.textContent = 'Err: Something went wrong';
+        });
   </script>
 {% else %}
   <h1>ไม่พบข้อมูล</h1>
