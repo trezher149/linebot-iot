@@ -66,6 +66,7 @@ async def front_environ_data(device_id: Device_id_Search):
     result_list = []
     for document in cursor:
         document["_id"] = str(document["_id"])
+        del document["_id"]
         result_list.append(document)
     return {
         "environ_data": result_list

@@ -20,5 +20,4 @@ async def test_endpoint():
 @app.get("/", response_class=HTMLResponse)
 async def liff_html(request: Request):
     data = requests.post("http://iot:8000/api/front/environ_data", json={"device_id": "c466"})
-    print(data.json())
     return templates.TemplateResponse("index.html", context={"request": request, "data": data})
