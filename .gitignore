@@ -2,3 +2,4 @@
 **/.env
 .venv
 **/.venv
+./liff/node_modules/**
