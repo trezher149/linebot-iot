@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environtify LIFF</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
+    <link rel="stylesheet" href="../static/style.css">
+    {% endblock head %}
+</head>
+<body class="bg-sky-300">
+    {% block navbar %}
+    <nav class="bg-sky-500 min-h-4 flex justify-between px-8 py-4 mb-8 drop-shadow-lg text-white">
+        <h1 class="text-4xl font-mono font-bold order-first m-auto ml-0">Environtify LIFF</h1>
+        <div class="ml-8 mr-0 my-auto">
+            <button id="btn">
+                <p id="status">Waiting for LIFF</p>
+            </button>
+        </div>
+    </nav>
+    {% endblock navbar %}
+    {% block content %}
+    {% endblock content %}
+
+      <script>
+        const navbar = document.getElementById("navbar")
+        const btn = document.getElementById("btn")
+        liff.init({
+            liffId: '2002540804-7koJoM5b', // Use own liffId
+            withLoginOnExternalBrowser: false, // Enable automatic login process
+        }).then(() => {
+            if (!liff.isLoggedIn() && !liff.isInClient()) {
+                btn.setAttribute("onclick", "liff.login()")
+                document.getElementById('status').textContent = 'LINE Login';
+            }
+            else {
+                const usrnameContainer = document.createElement("p")
+                const usrname = document.createTextNode('สวัสดีคุณ ' + liff.getProfile()["displayName"])
+                usrnameContainer.appendChild(usrname)
+                navbar.insertBefore(navbar, btn)
+                btn.setAttribute("onclick", "liff.logout()")
+                document.getElementById('status').textContent = "Logout";
+            }
+            // start to use LIFF's api
+        }).catch((err) => {
+            document.getElementById('status').textContent = 'Something went wrong';
+        });
+    </script>
+</body>
+</html>
