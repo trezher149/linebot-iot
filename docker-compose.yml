@@ -8,6 +8,7 @@ services:
     depends_on:
       - "iot"
   iot:
+    container_name: iot
     build: ./iot
     ports:
       - "8000:8000"
