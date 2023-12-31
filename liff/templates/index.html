@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 id="title" class="ml-12 text-2xl font-bold my-8">Report Environment</h1>
+{% if data %}
+
+<div id="charts">
+<h2 class="ml-16 text-lg font-bold">อุณหภูมิ</h2>
+<div class="mx-24 mb-12">
+  <canvas id="tempChart" class="max-h-96 min-h-48"></canvas>
+</div>
+
+<h2 class="ml-16 text-lg font-bold">ความชื้น</h2>
+<div class="mx-24 mb-12">
+  <canvas id="humidChart" class="max-h-96 min-h-48"></canvas>
+</div>
+
+<h2 class="ml-16 text-lg font-bold">ความดันอากาศ</h2>
+<div class="max-h-96 mx-24 mb-12">
+  <canvas id="pressureChart" class="max-h-96 min-h-48"></canvas>
+</div>
+</div>
+
+  <!-- this is a script for chartjs -->
+  <script>
+    const tempChart = document.getElementById('tempChart')
+    const humidChart = document.getElementById('humidChart')
+    const pressureChart = document.getElementById('pressureChart')
+    const environData = {{ data|safe }}
+    console.log (environData)
+    const labels = environData.map((x) => x["timestamp"])
+    const tempData = environData.map((x) => x["temperature"])
+    const humidData = environData.map((x) => x["humidity"])
+    const pressureData = environData.map((x) => x["pressure"])
+    const tmpData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'อุณหภูมิ (องศาเซลเซียส)',
+          data: tempData, //example data
+          fill: true,
+          backgroundColor: 'rgba(30, 221, 74, 0.4)',
+          borderColor: 'rgba(1, 211, 26, 1)',
+          borderWidth: 2,
+          borderRadius: 4
+        }
+        ]
+    }
+    const humData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'ความชื้น (เปอร์เซ็นต์)',
+          data: humidData, //example data
+          fill: true,
+          backgroundColor: 'rgba(36, 159, 215, 0.4)',
+          borderColor: 'rgba(0, 139, 239, 1)',
+          borderWidth: 2,
+          borderRadius: 4
+        }
+        ]
+    }
+    const prssData = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'ความดัน (ปาสคาล)',
+          data: pressureData, //example data
+          fill: true,
+          backgroundColor: 'rgba(115, 115, 115, 0.4)',
+          borderColor: 'rgba(115, 115, 115, 1)',
+          borderWidth: 2,
+          borderRadius: 4
+        }
+        ]
+    }
+    new Chart(tempChart, {
+      type: 'bar',
+      data: tmpData,
+      options: {
+        scales: {
+          y: {
+            min: 20,
+            max: 50
+            },
+          xAxes: [ { gridLines: { display: false } } ]
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+          }
+        }
+      }
+    )
+    new Chart(humidChart, {
+      type: 'bar',
+      data: humData,
+      options: {
+        scales: {
+          y: {
+            min: 30,
+            max: 100
+            },
+          xAxes: [ { gridLines: { display: false } } ]
+          },
+          plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+          }
+        }
+      }
+    )
+    new Chart(pressureChart, {
+      type: 'bar',
+      data: prssData,
+      options: {
+        scales: {
+          y: {
+            min: 50000
+            },
+          xAxes: [ { gridLines: { display: false } } ]
+          },
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+          }
+      }
+      }
+    )
+  </script>
+  <!-- this is a script for line liff -->
+  <script>
+        const container = document.getElementById("container")
+        const btn = document.getElementById("btn")
+        const title = document.getElementById("title")
+        const charts = document.getElementById("charts")
+        charts.style.display = 'none'
+        title.textContent = "โปรด login เข้าบัญชี LINE ของคุณ"
+        liff.init({
+            liffId: '2002540804-7koJoM5b', // Use own liffId
+            withLoginOnExternalBrowser: false, // Enable automatic login process
+        }).then(() => {
+            if (!liff.isLoggedIn() && !liff.isInClient()){
+                btn.setAttribute("onclick", "liff.login()")
+                btn.textContent = 'Login LINE';
+            }
+            else {
+                const idToken = liff.getDecodedIDToken()
+                const usrname = document.createTextNode("สวัสดีคุณ " + idToken["name"])
+                const usrnameContainer = document.createElement("p")
+                usrnameContainer.appendChild(usrname)
+                container.insertBefore(usrnameContainer, btn)
+                usrnameContainer.classList.add("my-auto")
+                btn.setAttribute("onclick", "liff.logout(); location.reload()")
+                btn.textContent = 'Logout';
+                charts.style.display = 'inline'
+                title.textContent = "Report Environment"
+            }
+            // start to use LIFF's api
+        }).catch((err) => {
+            btn.textContent = 'Err: Something went wrong';
+        });
+  </script>
+{% else %}
+  <h1>ไม่พบข้อมูล</h1>
+{% endif %}
+
+{% endblock content %}

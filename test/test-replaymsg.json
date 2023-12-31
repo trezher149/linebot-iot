@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "f061cb9f-207e-4b86-a6c0-1a17b1619931",
+		"name": "miniproject4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "15818118"
+	},
+	"item": [
+		{
+			"name": "https://api.line.me/v2/bot/message/push",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "***"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"to\": \"***\",\r\n    \"messages\":[\r\n        {\r\n            \"type\":\"text\",\r\n            \"text\":\"test by Postman\"\r\n        },\r\n        {\r\n            \"type\":\"text\",\r\n            \"text\":\"replay message\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "https://api.line.me/v2/bot/message/push"
+			},
+			"response": []
+		}
+	]
+}

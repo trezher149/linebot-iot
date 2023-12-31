@@ -1,0 +1,35 @@
+version: "4.11.1"
+services:
+  linebot:
+    build: ./linebot
+    ports:
+      - "5000:5000"
+    env_file: .env
+    depends_on:
+      - "iot"
+  iot:
+    container_name: iot
+    build: ./iot
+    ports:
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      - "mongodb"
+  frontend:
+    build: ./liff
+    ports:
+      - "6000:6000"
+    env_file: .env
+    depends_on:
+      - "mongodb"      
+    volumes:
+      - ./liff/templates:/usr/src/app/templates
+      - ./liff/static:/usr/src/app/static
+  mongodb:
+    container_name: "mongodb"
+    image: mongo
+    ports:
+      - "27017:27017"
+    env_file: .env
+    expose:
+      - 27017
