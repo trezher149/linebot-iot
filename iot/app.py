@@ -58,11 +58,11 @@ async def line_environment_data(device_id: Device_id_Search):
     data.pop('_id')
     return data
 
-@app.get("/api/front/environ_data")
-async def front_environ_data():
+@app.post("/api/front/environ_data")
+async def front_environ_data(device_id: Device_id_Search):
     db = environmen_database.test_database
     collection = db.env_device_data
-    cursor = collection.find(sort= [( '_id', pymongo.DESCENDING)], limit=15)
+    cursor = collection.find({'device_id': device_id.device_id},sort= [( '_id', pymongo.DESCENDING)], limit=15)
     result_list = []
     for document in cursor:
         document["_id"] = str(document["_id"])
