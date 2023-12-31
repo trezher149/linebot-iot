@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnviroNotify LIFF</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <nav id="navbar">
+        <h1>EnviroNotify LIFF</h1>
+        <button id="btn">
+            <p id="status">Waiting for LIFF</p>
+        </button>
+    </nav>
+    <script>
+        liff.init({
+            liffId: '2002540804-7koJoM5b', // Use own liffId
+            withLoginOnExternalBrowser: true, // Enable automatic login process
+        }).then(() => {
+            document.getElementById('status').textContent = 'LIFF is ready';
+            // start to use LIFF's api
+        }).catch((err) => {
+            document.getElementById('status').textContent = 'Something went wrong';
+        });
+    </script>
+    {% block content %}
+    
+    {% endblock content %}
+</body>
+</html>
