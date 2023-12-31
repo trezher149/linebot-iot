@@ -65,7 +65,7 @@ Bot Basic ID: @005wkjpj
 4. ณัฐนนท์ บุญเขตต์ (Nattanol Boonyakhet) 6310682726
    - Backend (API)
    - Backend (MQTT)
-5. ธัญญวัฒน์ ธนัครสมบัติ (Thunyavat Thanakornsombat) 6310682825
+5. ธัญญวัฒน์ ธนัครสมบัติ (Thunyavat Thanakornsombat, trezher149) 6310682825
    - Espressif ESP32
    - Fullstack
 
