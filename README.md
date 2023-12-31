@@ -5,18 +5,28 @@ This is an IOT development project with LINE Bot and LINE LIFF.
 
 ## How to use
 1. สร้าง .env โดยมีตัวแปรดังนี้
+
    MONGO_INITDB_ROOT_USERNAME=
+   
    MONGO_INITDB_ROOT_PASSWORD=
+   
    MONGO_HOST=mongodb:27017/
+   
    LINE_CHANNEL_SECRET=
+   
    LINE_ACCESS_TOKEN=
+   
    LINE_ADMIN_ID=
+   
    NGROK_TOKEN= //optional
+   
+
 2. ใช้ LINE Official Account ของตัวเอง ให้ใช้ webhook จาก forward port ของ VScode
 3. ต้องมี LINE Login channel เป็นของตัวเอง และใช้ webhook เหมือนข้อ 2 ที่ใข้ port เลข 6000
 4. รัน demo โดยใช้คำสั่งดังนี้
 
       `docker compose up -d`
+   
       `npx tailwindcss -i ./src/input.css -o ./dist/output.css --watch`
 
    โดยใช้คำสั่งในโฟลเดอร์ liff
@@ -34,6 +44,7 @@ This is an IOT development project with LINE Bot and LINE LIFF.
       `request.post("http://iot:8000/api/url/path")`
 
    ใน liff/app.py เพื่อให้สามารถดึงค่าจากฐานข้อมูล mongodb ได้
+   
 7. LINE bot สามารถใช้ webhook จาก forward port ของ VScode ไม่จำเป็นต้องใช้ของ ngrok เสมอไป
 
 ## Linebot EnviroNotify
@@ -57,3 +68,5 @@ Bot Basic ID: @005wkjpj
 5. ธัญญวัฒน์ ธนัครสมบัติ (Thunyavat Thanakornsombat) 6310682825
    - Espressif ESP32
    - Fullstack
+
+โครงงานนี้เป็นส่วนหนึ่งของวิชา CN466 Internet of Things อินเตอร์เน็ตของสรรพสิ่ง
